@@ -58,6 +58,7 @@ async function run() {
             const id = req.params.id;
             const updateProduct = req.body;
             const filter = { _id: ObjectId(id) };
+            console.log(updateProduct)
             productsCollection
                 .updateOne(filter, {
                     $set: {
@@ -77,7 +78,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
             res.send(result)
-            console.log(req.params)
+
         })
 
         // my order delete ----------
@@ -86,7 +87,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
             res.send(result)
-            console.log(req.params)
+
         })
 
         // delete product ===========================
@@ -95,7 +96,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.deleteOne(query);
             res.send(result)
-            console.log(req.params)
+
         })
 
 
@@ -118,7 +119,7 @@ async function run() {
             const product = req.body;
             const result = await reviewCollection.insertOne(product)
             res.json(result)
-            console.log(result)
+
         })
 
 
@@ -148,7 +149,7 @@ async function run() {
                 .then((result) => {
                     res.send(result);
                 });
-            console.log(status, color)
+
         });
 
 
@@ -184,6 +185,7 @@ async function run() {
         })
         // admin add -------------------- verifyToken,
         app.put('/users/admin', async (req, res) => {
+
             const user = req.body;
             const filter = { email: user.email };
             const updateDoc = { $set: { role: 'admin' } }
