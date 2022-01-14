@@ -199,10 +199,10 @@ async function run() {
                 total_amount: req.body.price,
                 currency: 'BDT',
                 tran_id: uuidv4(),
-                success_url: 'https://premier-pottery-retailer.web.app/success',
-                fail_url: 'https://premier-pottery-retailer.web.app/fail',
-                cancel_url: 'https://premier-pottery-retailer.web.app/cancel',
-                ipn_url: 'https://premier-pottery-retailer.web.app/ipn',
+                success_url: 'https://evening-woodland-47343.herokuapp.com/success',
+                fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
+                cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
+                ipn_url: 'http://yoursite.com/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.title,
                 product_category: 'Electronic',
@@ -236,7 +236,7 @@ async function run() {
             };
             const order = await orderCollection.insertOne(data)
 
-            const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, true) //true for live default false for sandbox
+            const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, false) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
                 //process the response that got from sslcommerz 
                 //https://developer.sslcommerz.com/doc/v4/#returned-parameters
@@ -260,11 +260,11 @@ async function run() {
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(400).redirect('https://premier-pottery-retailer.web.app/')
+            res.status(400).redirect('https://premier-pottery-retailer.web.app')
         })
         app.post('/cancel', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(300).redirect('https://premier-pottery-retailer.web.app/')
+            res.status(300).redirect('https://premier-pottery-retailer.web.app')
         })
         app.get('/orders/:tran_id', async (req, res) => {
             const id = req.params.tran_id;
