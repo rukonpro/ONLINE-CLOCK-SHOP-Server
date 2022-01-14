@@ -202,7 +202,7 @@ async function run() {
                 success_url: 'https://evening-woodland-47343.herokuapp.com/success',
                 fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
                 cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
-                ipn_url: 'https://evening-woodland-47343.herokuapp.com/ipn',
+                ipn_url: 'http://yoursite.com/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.title,
                 product_category: 'Electronic',
@@ -260,11 +260,11 @@ async function run() {
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(400).redirect('https://evening-woodland-47343.herokuapp.com/')
+            res.status(400).redirect('https://evening-woodland-47343.herokuapp.com')
         })
         app.post('/cancel', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(300).redirect('https://evening-woodland-47343.herokuapp.com/')
+            res.status(300).redirect('https://evening-woodland-47343.herokuapp.com')
         })
         app.get('/orders/:tran_id', async (req, res) => {
             const id = req.params.tran_id;
