@@ -199,9 +199,9 @@ async function run() {
                 total_amount: req.body.price,
                 currency: 'BDT',
                 tran_id: uuidv4(),
-                success_url: 'http://localhost:5000/success',
-                fail_url: 'http://localhost:5000/fail',
-                cancel_url: 'http://localhost:5000/cancel',
+                success_url: 'https://evening-woodland-47343.herokuapp.com/success',
+                fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
+                cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
                 ipn_url: 'http://yoursite.com/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.title,
@@ -238,8 +238,7 @@ async function run() {
 
             const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, false) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
-                //process the response that got from sslcommerz 
-                //https://developer.sslcommerz.com/doc/v4/#returned-parameters
+
                 if (data.GatewayPageURL) {
 
                     res.json(data.GatewayPageURL)
@@ -256,7 +255,7 @@ async function run() {
                     val_id: req.body.val_id
                 }
             })
-            res.status(200).redirect(`https://premier-pottery-retailer.web.app/success/${req.body.tran_id}`)
+            res.status(200).redirect(`https://premier-pottery-retailer.web.app/${req.body.tran_id}`)
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
