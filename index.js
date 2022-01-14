@@ -9,7 +9,8 @@ const port = process.env.PORT || 5000;
 app.use(express.urlencoded({ extended: true }));
 const { v4: uuidv4 } = require('uuid');
 // ------------------------------------------
-
+// STORE_ID=rukon61a9d037218c8
+// STORE_PASS=rukon61a9d037218c8@ssl
 app.use(cors());
 app.use(express.json());
 
