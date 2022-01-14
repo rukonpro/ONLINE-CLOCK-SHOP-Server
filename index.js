@@ -236,7 +236,7 @@ async function run() {
             };
             const order = await orderCollection.insertOne(data)
 
-            const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, false) //true for live default false for sandbox
+            const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, true) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
                 //process the response that got from sslcommerz 
                 //https://developer.sslcommerz.com/doc/v4/#returned-parameters
