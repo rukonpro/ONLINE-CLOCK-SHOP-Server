@@ -9,8 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(express.urlencoded({ extended: true }));
 const { v4: uuidv4 } = require('uuid');
 // ------------------------------------------
-// STORE_ID=rukon61a9d037218c8
-// STORE_PASS=rukon61a9d037218c8@ssl
+
 app.use(cors());
 app.use(express.json());
 
@@ -200,10 +199,10 @@ async function run() {
                 total_amount: req.body.price,
                 currency: 'BDT',
                 tran_id: uuidv4(),
-                success_url: 'https://evening-woodland-47343.herokuapp.com/success',
-                fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
-                cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
-                ipn_url: 'http://yoursite.com/ipn',
+                success_url: 'https://premier-pottery-retailer.web.app/success',
+                fail_url: 'https://premier-pottery-retailer.web.app/fail',
+                cancel_url: 'https://premier-pottery-retailer.web.app/cancel',
+                ipn_url: 'https://premier-pottery-retailer.web.app/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.title,
                 product_category: 'Electronic',
@@ -257,15 +256,15 @@ async function run() {
                     val_id: req.body.val_id
                 }
             })
-            res.status(200).redirect(`https://evening-woodland-47343.herokuapp.com/success/${req.body.tran_id}`)
+            res.status(200).redirect(`https://premier-pottery-retailer.web.app/success/${req.body.tran_id}`)
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(400).redirect('https://evening-woodland-47343.herokuapp.com')
+            res.status(400).redirect('https://premier-pottery-retailer.web.app/')
         })
         app.post('/cancel', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(300).redirect('https://evening-woodland-47343.herokuapp.com')
+            res.status(300).redirect('https://premier-pottery-retailer.web.app/')
         })
         app.get('/orders/:tran_id', async (req, res) => {
             const id = req.params.tran_id;
