@@ -199,9 +199,9 @@ async function run() {
                 total_amount: req.body.total_amount,
                 currency: 'BDT',
                 tran_id: uuidv4(),
-                success_url: 'http://localhost:5000/success',
-                fail_url: 'http://localhost:5000/fail',
-                cancel_url: 'http://localhost:5000/cancel',
+                success_url: 'https://evening-woodland-47343.herokuapp.com/success',
+                fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
+                cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
                 ipn_url: 'http://yoursite.com/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.product_name,
@@ -257,15 +257,15 @@ async function run() {
                     val_id: req.body.val_id
                 }
             })
-            res.status(200).redirect(`http://localhost:3000/success/${req.body.tran_id}`)
+            res.status(200).redirect(`https://premier-pottery-retailer.web.app/success/${req.body.tran_id}`)
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(400).redirect('http://localhost:3000')
+            res.status(400).redirect('https://premier-pottery-retailer.web.app')
         })
         app.post('/cancel', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(300).redirect('http://localhost:3000')
+            res.status(300).redirect('https://premier-pottery-retailer.web.app')
         })
         app.post("/ipn", (req, res) => {
             console.log(req.body)
