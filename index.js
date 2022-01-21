@@ -196,23 +196,23 @@ async function run() {
         app.post('/init', async (req, res) => {
 
             const data = {
-                total_amount: req.body.price,
+                total_amount: req.body.total_amount,
                 currency: 'BDT',
                 tran_id: uuidv4(),
-                success_url: 'https://evening-woodland-47343.herokuapp.com/success',
-                fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
-                cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
+                success_url: 'http://localhost:5000/success',
+                fail_url: 'http://localhost:5000/fail',
+                cancel_url: 'http://localhost:5000/cancel',
                 ipn_url: 'http://yoursite.com/ipn',
                 shipping_method: 'Courier',
-                product_name: req.body.title,
+                product_name: req.body.product_name,
                 product_category: 'Electronic',
-                product_profile: req.body.description,
-                cus_name: req.body.name,
-                cus_email: req.body.email,
+                product_profile: req.body.product_profile,
+                cus_name: req.body.cus_name,
+                cus_email: req.body.cus_email,
                 date: req.body.date,
                 status: req.body.status,
                 color: req.body.color,
-                img: req.body.img,
+                product_image: req.body.product_image,
                 cus_add1: 'Dhaka',
                 cus_add2: 'Dhaka',
                 cus_city: 'Dhaka',
@@ -235,9 +235,11 @@ async function run() {
                 value_d: 'ref004_D'
             };
             const order = await orderCollection.insertOne(data)
-
+            console.log(data)
             const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, false) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
+                //process the response that got from sslcommerz 
+                //https://developer.sslcommerz.com/doc/v4/#returned-parameters
 
                 if (data.GatewayPageURL) {
 
@@ -255,18 +257,23 @@ async function run() {
                     val_id: req.body.val_id
                 }
             })
-            res.status(200).redirect(`https://premier-pottery-retailer.web.app/${req.body.tran_id}`)
+            res.status(200).redirect(`http://localhost:3000/success/${req.body.tran_id}`)
         })
         app.post('/fail', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(400).redirect('https://premier-pottery-retailer.web.app')
+            res.status(400).redirect('http://localhost:3000')
         })
         app.post('/cancel', async (req, res) => {
             const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-            res.status(300).redirect('https://premier-pottery-retailer.web.app')
+            res.status(300).redirect('http://localhost:3000')
         })
-        app.get('/orders/:tran_id', async (req, res) => {
+        app.post("/ipn", (req, res) => {
+            console.log(req.body)
+            res.send(req.body);
+        })
+        app.get('/order/:tran_id', async (req, res) => {
             const id = req.params.tran_id;
+            console.log(id)
             const result = await orderCollection.findOne({ tran_id: id })
             res.json(result)
         })
@@ -282,7 +289,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Hello assignment 12!')
+    res.send('Online clock Shop')
 })
 
 app.listen(port, () => {
