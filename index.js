@@ -25,6 +25,7 @@ async function run() {
         const usersCollection = database.collection('users');
         const productsCollection = database.collection('products');
         const orderCollection = database.collection('order');
+        const requestTodayCollection = database.collection('request');
         const reviewCollection = database.collection('review');
 
 
@@ -40,10 +41,15 @@ async function run() {
             const products = await orderCollection.find({}).toArray();
             res.send(products);
         })
-        // all order products get ==============================================
+        // all review get ==============================================
         app.get('/review', async (req, res) => {
             const review = await reviewCollection.find({}).toArray();
             res.send(review);
+        })
+        // all request get ==============================================
+        app.get('/request', async (req, res) => {
+            const request = await requestTodayCollection.find({}).toArray();
+            res.send(request);
         })
 
         //get place order--------------------
@@ -98,6 +104,14 @@ async function run() {
             res.send(result)
 
         })
+        // massage Delete ===========================
+        app.delete('/massageDelete/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await requestTodayCollection.deleteOne(query);
+            res.send(result)
+
+        })
 
         // add products==================================================
         app.post('/addedProduct', async (req, res) => {
@@ -116,6 +130,13 @@ async function run() {
         app.post('/review', async (req, res) => {
             const product = req.body;
             const result = await reviewCollection.insertOne(product)
+            res.json(result)
+
+        })
+        // Request Today ==================================================
+        app.post('/request', async (req, res) => {
+            const product = req.body;
+            const result = await requestTodayCollection.insertOne(product)
             res.json(result)
 
         })
@@ -202,7 +223,7 @@ async function run() {
                 success_url: 'https://evening-woodland-47343.herokuapp.com/success',
                 fail_url: 'https://evening-woodland-47343.herokuapp.com/fail',
                 cancel_url: 'https://evening-woodland-47343.herokuapp.com/cancel',
-                ipn_url: 'http://yoursite.com/ipn',
+                ipn_url: 'https://evening-woodland-47343.herokuapp.com/ipn',
                 shipping_method: 'Courier',
                 product_name: req.body.product_name,
                 product_category: 'Electronic',
@@ -235,7 +256,7 @@ async function run() {
                 value_d: 'ref004_D'
             };
             const order = await orderCollection.insertOne(data)
-            console.log(data)
+
             const sslcommer = new SSLCommerzPayment(process.env.STORE_ID, process.env.STORE_PASS, false) //true for live default false for sandbox
             sslcommer.init(data).then(data => {
                 //process the response that got from sslcommerz 
