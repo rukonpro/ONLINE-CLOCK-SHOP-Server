@@ -71,7 +71,8 @@ async function run() {
                     title: updateProduct.title,
                     description: updateProduct.description,
                     price: updateProduct.price,
-                    img: updateProduct.img
+                    img: updateProduct.img,
+                    rating: updateProduct.rating,
                 },
             })
                 .then((result) => {
