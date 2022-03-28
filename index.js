@@ -32,8 +32,15 @@ async function run() {
 
         // all products get ==============================================
         app.get('/products', async (req, res) => {
-            const products = await productsCollection.find({}).toArray();
-            res.send(products);
+            const page = Number(req.query.page);
+            const size = Number(req.query.size);
+            const cursor = productsCollection.find({});
+            let products = await cursor.skip(page * size).limit(size).toArray();
+                      
+            res.send(products)
+
+            /*  const products = await productsCollection.find({}).toArray();
+             res.send(products); */
         })
 
         // all order products get ==============================================
@@ -196,7 +203,10 @@ async function run() {
         // update user=======================
         app.put('/users', async (req, res) => {
             const user = req.body;
-            const filter = { email: user.email };
+            const filter = {
+                email: user.email
+
+            };
             const options = { upsert: true };
             const updateDoc = { $set: user };
             const result = await usersCollection.updateOne(filter, updateDoc, options);
