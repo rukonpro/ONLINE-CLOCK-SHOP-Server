@@ -4,11 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const { orderCollection } = require('../../MongoDB/MongoDBCollection');
 
 
-
-
 module.exports.paymentInit = async (req, res) => {
     try {
-        // https://evening-woodland-47343.herokuapp.com/api/v1/review
         const data = {
             total_amount: req.body.total_amount,
             currency: 'BDT',
@@ -77,7 +74,7 @@ module.exports.paymentSuccess = async (req, res) => {
                 val_id: req.body.val_id
             }
         })
-        res.status(200).redirect(`http://localhost:3000/success/${req.body.tran_id}`);
+        res.status(200).redirect(`https://premier-pottery-retailer.web.app/success/${req.body.tran_id}`);
     } catch (error) {
         res.status(400).send("Server Error ♨_♨");
     }
@@ -86,7 +83,7 @@ module.exports.paymentSuccess = async (req, res) => {
 module.exports.paymentFail = async (req, res) => {
     try {
         const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-        res.status(400).redirect('http://localhost:3000')
+        res.status(400).redirect('https://premier-pottery-retailer.web.app')
     } catch (error) {
         res.status(400).send("Server Error ♨_♨");
     }
@@ -95,7 +92,7 @@ module.exports.paymentFail = async (req, res) => {
 module.exports.paymentCancel = async (req, res) => {
     try {
         const result = await orderCollection.deleteOne({ tran_id: req.body.tran_id })
-        res.status(300).redirect('http://localhost:3000')
+        res.status(300).redirect('https://premier-pottery-retailer.web.app')
     } catch (error) {
         res.status(400).send("Server Error ♨_♨");
     }
